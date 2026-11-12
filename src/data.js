@@ -83,3 +83,14 @@ export const hackathons = [
 export const previews = [
   ['Full Stack', 'var(--green)'], ['AI & Automation', 'var(--yellow)'], ['Embedded', 'var(--blue)'], ['Design', '#fff'],
 ]
+
+// Booking settings. Times are in Pakistan time (PKT, UTC+5).
+export const bookingCfg = {
+  days: [1, 2, 3, 4, 5, 6], // open days: 0 = Sunday ... 6 = Saturday
+  from: 11,                 // first slot starts at 11:00
+  to: 19,                   // last slot ends at 19:00
+  slotMins: 30,             // length of one call
+  ahead: 14,                // how many days ahead people can book
+  minNoticeHrs: 3,          // no booking closer than this
+  utcOffset: 5,             // Pakistan time
+}
