@@ -16,6 +16,7 @@ export default function About() {
           <div className="row">
             <a className="pill black" href={links.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
             <a className="pill black" href={links.github} target="_blank" rel="noreferrer">GitHub</a>
+            <a className="pill black" href={links.fiverr} target="_blank" rel="noreferrer">Fiverr</a>
             <Link className="pill white" to="/book">Book a call</Link>
           </div>
         </div>

@@ -2,6 +2,7 @@
 export const links = {
   linkedin: 'https://www.linkedin.com/in/toufeeq-shaikh-880019321',
   github: 'https://github.com/toufeeqahmed916',
+  fiverr: 'https://www.fiverr.com/toufeeqahmed916',
   email: 'toufeeqahmed912006@gmail.com',
   phone: '+92 303 3869307',
 }
