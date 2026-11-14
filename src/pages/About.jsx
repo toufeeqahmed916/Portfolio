@@ -1,9 +1,11 @@
 import { motion } from 'framer-motion'
 import { Words, Reveal, Accordion, Counter, TechFloat } from '../ui'
 import { Link } from '../router'
+import { useReady } from '../ready'
 import { links, stats, stack, journey, hackathons, process, faqs } from '../data'
 
 export default function About() {
+  const ready = useReady()
   return (
     <>
       <section className="sec page-head about-head">
@@ -20,8 +22,8 @@ export default function About() {
             <Link className="pill white" to="/book">Book a call</Link>
           </div>
         </div>
-        <motion.div className="hcard about-photo" initial={{ y: 80, opacity: 0, rotate: 6 }} animate={{ y: 0, opacity: 1, rotate: 3 }} transition={{ duration: .8, ease: [.2, .7, .2, 1] }} whileHover={{ rotate: -2, scale: 1.03 }}>
-          <img src="/avatar.png" alt="Toufeeq Shaikh" />
+        <motion.div className="hcard about-photo" initial={{ y: 80, opacity: 0, rotate: 6 }} animate={ready ? { y: 0, opacity: 1, rotate: 3 } : {}} transition={{ duration: .8, ease: [.2, .7, .2, 1] }} whileHover={{ rotate: -2, scale: 1.03 }}>
+          <img src="/avatar.webp" alt="Toufeeq Shaikh" width="720" height="720" fetchpriority="high" decoding="async" />
         </motion.div>
       </section>
 
@@ -57,7 +59,7 @@ export default function About() {
         <Reveal><p className="lead">My process mixes smart planning with clean code. I understand the problem first, then design, build and improve it step by step, and I stay with you after launch.</p></Reveal>
         <div className="proc">
           {process.map((p, i) => p.img
-            ? <motion.div key={i} className="pc img" initial={{ opacity: 0, scale: .9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * .06 }} whileHover={{ rotate: -2, scale: 1.03 }}><img src={p.img} alt="" loading="lazy" /></motion.div>
+            ? <motion.div key={i} className="pc img" initial={{ opacity: 0, scale: .9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * .06 }} whileHover={{ rotate: -2, scale: 1.03 }}><img src={p.img} alt="" width="576" height="608" loading="lazy" decoding="async" /></motion.div>
             : <motion.div key={i} className={'pc ' + p.k + (p.wide ? ' wide' : '')} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * .06 }} whileHover={{ y: -6 }}><b>{p.n}.</b><span>{p.t}</span></motion.div>)}
         </div>
       </section>

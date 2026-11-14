@@ -3,6 +3,7 @@ import { motion, AnimatePresence, useInView, animate, useScroll, useTransform, u
 import { Link } from './router'
 import { previews } from './data'
 import { sfx } from './sound'
+import { useReady } from './ready'
 
 export const Chev = ({ open }) => (
   <motion.svg animate={{ rotate: open ? 180 : 0 }} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M6 9l6 6 6-6" /></motion.svg>
@@ -64,25 +65,25 @@ export function HandIcon() {
 }
 
 const techIcons = [
-  { k: 'HTML', src: '/icons/html.png', x: 6, y: 3, d: 4.2 },
-  { k: 'React', src: '/icons/react.png', x: 40, y: 0, d: 5 },
-  { k: 'JavaScript', src: '/icons/javascript.png', x: 72, y: 8, d: 3.8 },
-  { k: 'CSS', src: '/icons/css.png', x: 24, y: 17, d: 4.6 },
-  { k: 'TypeScript', src: '/icons/typescript.png', x: 56, y: 22, d: 5.4 },
-  { k: 'Tailwind CSS', src: '/icons/tailwind.png', x: 4, y: 30, d: 4.4 },
-  { k: 'Bootstrap', src: '/icons/bootstrap.png', x: 38, y: 38, d: 5.2 },
-  { k: 'Node.js', src: '/icons/nodejs.png', x: 70, y: 40, d: 4 },
-  { k: 'Express.js', src: '/icons/express.png', x: 18, y: 50, d: 4.8 },
-  { k: 'Python', src: '/icons/python.png', x: 52, y: 54, d: 5.6 },
-  { k: 'Git', src: '/icons/git.png', x: 2, y: 66, d: 4.1 },
-  { k: 'GitHub', src: '/icons/github.png', x: 34, y: 68, d: 4.9 },
-  { k: 'PostgreSQL', src: '/icons/postgresql.png', x: 68, y: 64, d: 5.3 },
-  { k: 'Supabase', src: '/icons/supabase.png', x: 14, y: 82, d: 4.5 },
-  { k: 'C++', src: '/icons/cpp.png', x: 46, y: 82, d: 5.1 },
-  { k: 'Arduino', src: '/icons/arduino.png', x: 74, y: 82, d: 3.9 },
+  { k: 'HTML', src: '/icons/html.webp', x: 6, y: 3, d: 4.2 },
+  { k: 'React', src: '/icons/react.webp', x: 40, y: 0, d: 5 },
+  { k: 'JavaScript', src: '/icons/javascript.webp', x: 72, y: 8, d: 3.8 },
+  { k: 'CSS', src: '/icons/css.webp', x: 24, y: 17, d: 4.6 },
+  { k: 'TypeScript', src: '/icons/typescript.webp', x: 56, y: 22, d: 5.4 },
+  { k: 'Tailwind CSS', src: '/icons/tailwind.webp', x: 4, y: 30, d: 4.4 },
+  { k: 'Bootstrap', src: '/icons/bootstrap.webp', x: 38, y: 38, d: 5.2 },
+  { k: 'Node.js', src: '/icons/nodejs.webp', x: 70, y: 40, d: 4 },
+  { k: 'Express.js', src: '/icons/express.webp', x: 18, y: 50, d: 4.8 },
+  { k: 'Python', src: '/icons/python.webp', x: 52, y: 54, d: 5.6 },
+  { k: 'Git', src: '/icons/git.webp', x: 2, y: 66, d: 4.1 },
+  { k: 'GitHub', src: '/icons/github.webp', x: 34, y: 68, d: 4.9 },
+  { k: 'PostgreSQL', src: '/icons/postgresql.webp', x: 68, y: 64, d: 5.3 },
+  { k: 'Supabase', src: '/icons/supabase.webp', x: 14, y: 82, d: 4.5 },
+  { k: 'C++', src: '/icons/cpp.webp', x: 46, y: 82, d: 5.1 },
+  { k: 'Arduino', src: '/icons/arduino.webp', x: 74, y: 82, d: 3.9 },
 ]
 
-function FloatIcon({ ic, mx, my, box }) {
+function FloatIcon({ ic, mx, my, box, on }) {
   const ref = useRef(null)
   const push = (axis) => ([x, y]) => {
     const el = ref.current; if (!el) return 0
@@ -94,9 +95,9 @@ function FloatIcon({ ic, mx, my, box }) {
   const sy = useSpring(useTransform([mx, my], push(1)), { stiffness: 110, damping: 13 })
   return (
     <motion.div ref={ref} className="ficon" style={{ left: ic.x + '%', top: ic.y + '%', x: sx, y: sy }}>
-      <motion.div animate={{ y: [0, -14, 0], rotate: [-4, 4, -4] }} transition={{ repeat: Infinity, duration: ic.d, ease: 'easeInOut' }}>
+      <motion.div animate={on ? { y: [0, -14, 0], rotate: [-4, 4, -4] } : { y: 0, rotate: 0 }} transition={on ? { repeat: Infinity, duration: ic.d, ease: 'easeInOut' } : { duration: .3 }}>
         <motion.div className="ficon-in" drag dragConstraints={box} dragElastic={.25} whileHover={{ scale: 1.18, rotate: 8 }} whileTap={{ scale: .92, cursor: 'grabbing' }} onTapStart={() => sfx('pop')} title={ic.k}>
-          <img src={ic.src} alt={ic.k} draggable={false} />
+          <img src={ic.src} alt={ic.k} width="104" height="104" loading="lazy" decoding="async" draggable={false} />
         </motion.div>
       </motion.div>
     </motion.div>
@@ -105,16 +106,18 @@ function FloatIcon({ ic, mx, my, box }) {
 
 export function TechFloat() {
   const box = useRef(null)
+  const on = useInView(box, { margin: '100px' })
   const mx = useMotionValue(-9999), my = useMotionValue(-9999)
   const move = e => { const r = box.current.getBoundingClientRect(); mx.set(e.clientX - r.left); my.set(e.clientY - r.top) }
   return (
     <div className="tfloat" ref={box} onMouseMove={move} onMouseLeave={() => { mx.set(-9999); my.set(-9999) }}>
-      {techIcons.map(ic => <FloatIcon key={ic.k} ic={ic} mx={mx} my={my} box={box} />)}
+      {techIcons.map(ic => <FloatIcon key={ic.k} ic={ic} mx={mx} my={my} box={box} on={on} />)}
     </div>
   )
 }
 
 export function Hero() {
+  const ready = useReady()
   const mx = useMotionValue(0), my = useMotionValue(0)
   const rx = useSpring(useTransform(my, [-1, 1], [8, -8]), { stiffness: 120, damping: 14 })
   const ry = useSpring(useTransform(mx, [-1, 1], [-10, 10]), { stiffness: 120, damping: 14 })
@@ -123,16 +126,16 @@ export function Hero() {
   const move = e => { const r = e.currentTarget.getBoundingClientRect(); mx.set((e.clientX - r.left) / r.width * 2 - 1); my.set((e.clientY - r.top) / r.height * 2 - 1) }
   return (
     <section id="home" className="hero" onMouseMove={move}>
-      <motion.h1 className="hname l" style={{ y: nameY }} initial={{ x: -140, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: .9, ease: [.2, .7, .2, 1] }}>Toufeeq</motion.h1>
-      <motion.div className="hcard" style={{ rotateX: rx, rotateY: ry, transformPerspective: 900 }} initial={{ y: 120, opacity: 0, rotate: -6 }} animate={{ y: 0, opacity: 1, rotate: 0 }} transition={{ duration: .9, delay: .15, ease: [.2, .7, .2, 1] }}>
-        <img src="/avatar.png" alt="Toufeeq Shaikh" />
+      <motion.h1 className="hname l" style={{ y: nameY }} initial={{ x: -140, opacity: 0 }} animate={ready ? { x: 0, opacity: 1 } : {}} transition={{ duration: .9, ease: [.2, .7, .2, 1] }}>Toufeeq</motion.h1>
+      <motion.div className="hcard" style={{ rotateX: rx, rotateY: ry, transformPerspective: 900 }} initial={{ y: 120, opacity: 0, rotate: -6 }} animate={ready ? { y: 0, opacity: 1, rotate: 0 } : {}} transition={{ duration: .9, delay: .15, ease: [.2, .7, .2, 1] }}>
+        <img src="/avatar.webp" alt="Toufeeq Shaikh" width="720" height="720" fetchpriority="high" decoding="async" />
         <motion.div className="hi" animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 2.4 }}>
           <HandIcon />
         </motion.div>
       </motion.div>
-      <motion.h1 className="hname r" style={{ y: nameY }} initial={{ x: 140, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: .9, ease: [.2, .7, .2, 1] }}>Shaikh</motion.h1>
-      <motion.p className="hsub" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .7 }}>I'm a Pakistan-based Full Stack Developer and AI Engineer. I build web apps and smart automations that work while you sleep.</motion.p>
-      <motion.div className="hero-cta row" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .9 }}>
+      <motion.h1 className="hname r" style={{ y: nameY }} initial={{ x: 140, opacity: 0 }} animate={ready ? { x: 0, opacity: 1 } : {}} transition={{ duration: .9, ease: [.2, .7, .2, 1] }}>Shaikh</motion.h1>
+      <motion.p className="hsub" initial={{ opacity: 0, y: 20 }} animate={ready ? { opacity: 1, y: 0 } : {}} transition={{ delay: .7 }}>I'm a Pakistan-based Full Stack Developer and AI Engineer. I build web apps and smart automations that work while you sleep.</motion.p>
+      <motion.div className="hero-cta row" initial={{ opacity: 0, y: 20 }} animate={ready ? { opacity: 1, y: 0 } : {}} transition={{ delay: .9 }}>
         <Link className="pill black" to="/projects">See my work</Link>
         <Link className="pill white" to="/book">Book a call</Link>
       </motion.div>
@@ -150,8 +153,8 @@ export function StickyPhoto({ children }) {
       <div className="stick-text">{children}</div>
       <div className="stick-card-wrap">
         <motion.div className="stick-card" style={{ rotate: rot }}>
-          <motion.img src="/avatar.png" alt="" style={{ opacity: o1 }} />
-          <motion.img src="/head.png" alt="Toufeeq Shaikh" style={{ opacity: o3 }} />
+          <motion.img src="/avatar.webp" alt="" width="720" height="720" loading="lazy" decoding="async" style={{ opacity: o1 }} />
+          <motion.img src="/head.webp" alt="Toufeeq Shaikh" width="640" height="640" loading="lazy" decoding="async" style={{ opacity: o3 }} />
         </motion.div>
       </div>
     </div>
@@ -174,7 +177,7 @@ export function ProjectCard({ p }) {
         </div>
       </div>
       {p.img
-        ? <motion.a className="pshot" href={p.live} target="_blank" rel="noreferrer" whileHover={{ rotate: -2, scale: 1.03 }}><img src={p.img} alt={p.title + ' website screenshot'} loading="lazy" /></motion.a>
+        ? <motion.a className="pshot" href={p.live} target="_blank" rel="noreferrer" whileHover={{ rotate: -2, scale: 1.03 }}><img src={p.img} alt={p.title + ' website screenshot'} width="960" height="546" loading="lazy" decoding="async" /></motion.a>
         : <div className="pshot soonbox"><span>Deploying soon</span></div>}
     </motion.article>
   )

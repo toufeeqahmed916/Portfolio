@@ -21,15 +21,15 @@ export const stats = [
 ]
 
 export const projects = [
-  { tag: 'AI + Maps', title: 'Karwan', color: 'var(--green)', ink: '#111', img: '/karwan.webp',
+  { tag: 'AI + Maps', title: 'Karwan', color: 'var(--green)', ink: '#111', img: '/karwan.jpg',
     problem: 'After floods and disasters, relief trucks reach some areas late and others get too much. Teams plan on guesswork.',
     what: 'Karwan shows needs on a live map with heatmaps, finds real routes, tracks trucks live, and lets teams test what-if plans before they send help. It won 2nd place at OPEN HACK\'26 among 60+ teams.',
     live: 'https://karwann-frontend.vercel.app/', code: 'https://github.com/toufeeqahmed916' },
-  { tag: 'AI + Full Stack', title: 'Haven', color: 'var(--blue)', ink: '#fff', img: '/haven.webp',
+  { tag: 'AI + Full Stack', title: 'Haven', color: 'var(--blue)', ink: '#fff', img: '/haven.jpg',
     problem: 'Many people in Pakistan do not know where to complain, or never hear back when they do.',
     what: 'Haven lets citizens report safety issues and complaints in Urdu, Sindhi or English. AI sorts and ranks them, and an admin control room helps teams act fast.',
     live: 'https://haven-five-flax.vercel.app/', code: 'https://github.com/toufeeqahmed916' },
-  { tag: 'Event Website', title: 'System X Hackathon', color: '#111', ink: '#fff', img: '/systemx.webp',
+  { tag: 'Event Website', title: 'System X Hackathon', color: '#111', ink: '#fff', img: '/systemx.jpg',
     what: 'I built the official website for System X Hackathon 1.0, a CS event at MUET Jamshoro. Winners, judges, gallery, reviews and FAQ, all in one fast place.',
     live: 'https://systemhackathon.netlify.app/', code: 'https://github.com/System-x-hackathon' },
   { tag: 'Mobile App', title: 'Hostel 24', color: 'var(--yellow)', ink: '#111',

@@ -170,7 +170,7 @@ export default function Book() {
           <Words as="h1" className="page-title" text="Let's talk" />
           <Reveal><p className="lead">Pick a time for a free call, or just send me a message. Either way, I read everything.</p></Reveal>
         </div>
-        <div className="cav small"><img src="/avatar.png" alt="" /><motion.div className="hi" animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 2.4 }}><HandIcon /></motion.div></div>
+        <div className="cav small"><img src="/avatar.webp" alt="" width="720" height="720" decoding="async" /><motion.div className="hi" animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 2.4 }}><HandIcon /></motion.div></div>
       </div>
       <div className="tabs" role="tablist">
         <button role="tab" aria-selected={tab === 'call'} className={'pill' + (tab === 'call' ? ' black' : ' white')} onClick={() => setTab('call')}>Book a call</button>
